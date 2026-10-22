@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zapatería Sololá - Abastecimiento Inteligente (Gran M)</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js para el gráfico final -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Menú Lateral -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>VKElegant Zapatería Sololá</h2>
+                <span>Abastecimiento Inteligente</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showModule('panel')" id="nav-panel" class="active">Panel Principal</a></li>
+                <li><a href="#" onclick="showModule('proveedores')" id="nav-proveedores">Proveedores</a></li>
+                <li><a href="#" onclick="showModule('productos')" id="nav-productos">Productos</a></li>
+                <li><a href="#" onclick="showModule('pedidos')" id="nav-pedidos">Necesidades</a></li>
+                <li><a href="#" onclick="showModule('optimizacion')" id="nav-optimizacion">Resolución Gran M</a></li>
+                <li><a href="#" onclick="showModule('resultados')" id="nav-resultados">Resultados</a></li>
+                <li><a href="#" onclick="showModule('academico')" id="nav-academico">Método Matemático</a></li>
+            </ul>
+            <!-- INICIO: Tus datos de estudiante -->
+            <div class="student-info">
+                <p class="student-name"> Universidad Mariano Gálvez</p>
+                <p class="student-details"> Investigación de Operaciones</p>
+                <p class="student-details"> Karla Mariela Palax Tuy </p>
+                <p class="student-details"> Carné: 2290-24-14588</p>
+
+            </div>
+            <div class="sidebar-footer">
+                <button onclick="cargarDemo()" class="btn-secondary">Cargar Demo (Gran M)</button>
+                <button onclick="limpiarDatos()" class="btn-danger">Limpiar Datos</button>
+            </div>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <header>
+                <h1 id="module-title">Panel Principal</h1>
+            </header>
+
+            <!-- MÓDULO 1: PANEL -->
+            <section id="panel" class="module active">
+                <div class="dashboard-cards">
+                    <div class="card"><h3>Proveedores</h3><p id="dash-prov">0</p></div>
+                    <div class="card"><h3>Productos</h3><p id="dash-prod">0</p></div>
+                    <div class="card"><h3>Necesidades</h3><p id="dash-ped">0</p></div>
+                </div>
+                <div id="panel-empty" class="alert info">El sistema no tiene datos. Carga los datos de demostración en el menú lateral.</div>
+            </section>
+
+            <!-- MÓDULO 2: PROVEEDORES -->
+            <section id="proveedores" class="module hidden">
+                <div class="card-form">
+                    <h3>Registrar Proveedor</h3>
+                    <form id="form-proveedor" onsubmit="guardarProveedor(event)">
+                        <div class="form-row">
+                            <div><label>Nombre</label><input type="text" id="prov-nombre" required></div>
+                            <div><label>Ubicación</label><input type="text" id="prov-ubicacion" required></div>
+                            <div><label>Costo Encomienda Fija (Q)</label><input type="number" id="prov-envio" value="45" required></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar</button>
+                    </form>
+                </div>
+                <table id="tabla-proveedores">
+                    <thead><tr><th>Nombre</th><th>Ubicación</th><th>Costo Envío</th><th>Acciones</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- MÓDULO 3: PRODUCTOS -->
+            <section id="productos" class="module hidden">
+                <div class="card-form">
+                    <h3>Registrar Disponibilidad de Producto</h3>
+                    <form id="form-producto" onsubmit="guardarProducto(event)">
+                        <div class="form-row">
+                            <div><label>Código</label><input type="text" id="prod-codigo" required></div>
+                            <div><label>Descripción/Talla</label><input type="text" id="prod-desc" required></div>
+                            <div><label>Proveedor</label><select id="prod-prov" required></select></div>
+                            <div><label>Precio Compra (Q)</label><input type="number" id="prod-precio" required></div>
+                            <div><label>Existencias (Cant)</label><input type="number" id="prod-disp" required></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Guardar Disponibilidad</button>
+                    </form>
+                </div>
+                <table id="tabla-productos">
+                    <thead><tr><th>Código</th><th>Descripción</th><th>Proveedor</th><th>Precio</th><th>Existencias</th><th>Acciones</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- MÓDULO 4: NECESIDADES -->
+            <section id="pedidos" class="module hidden">
+                <div class="card-form">
+                    <h3>¿Qué necesitamos reponer?</h3>
+                    <form id="form-pedido" onsubmit="guardarPedido(event)">
+                        <div class="form-row">
+                            <div><label>Producto Único (Código)</label><select id="ped-codigo" required></select></div>
+                            <div><label>Cantidad Requerida Exacta</label><input type="number" id="ped-cant" required></div>
+                        </div>
+                        <button type="submit" class="btn-primary">Agregar Requerimiento</button>
+                    </form>
+                </div>
+                <table id="tabla-pedidos">
+                    <thead><tr><th>Producto</th><th>Cantidad Requerida</th><th>Acciones</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- MÓDULO 5: OPTIMIZACIÓN (GRAN M) -->
+            <section id="optimizacion" class="module hidden">
+                <div class="card-form text-center">
+                    <h2>Motor Matemático Simplex (Método Gran M)</h2>
+                    <p>El algoritmo construirá la tabla inicial, agregará variables de holgura y artificiales, y realizará iteraciones de pivoteo hasta encontrar la solución óptima.</p>
+                    <button class="btn-primary btn-large" onclick="ejecutarGranM()">Ejecutar Algoritmo Gran M</button>
+                </div>
+                <div id="simplex-output"></div>
+            </section>
+
+            <!-- MÓDULO 6: RESULTADOS -->
+            <section id="resultados" class="module hidden">
+                <div id="res-content" class="hidden">
+                    <div class="dashboard-cards">
+                        <div class="card"><h3>Costo Óptimo de Compra</h3><p id="res-costo-compra">Q0.00</p></div>
+                        <div class="card accent"><h3>Costo Total + Envíos</h3><p id="res-costo-total">Q0.00</p></div>
+                    </div>
+                    <div class="card-form">
+                        <h3>Plan de Compras Recomendado</h3>
+                        <table id="tabla-res-compras">
+                            <thead><tr><th>Producto</th><th>Comprar A</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
+                            <tbody></tbody>
+                        </table>
+                        <br>
+                        <p class="nota"><strong>Nota:</strong> El método Simplex optimizó el costo de compra. Los envíos se calcularon sumando Q45 por cada proveedor distinto activado en el resultado.</p>
+                        <button class="btn-secondary" onclick="exportarCSV()">Exportar a CSV</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MÓDULO 7: ACADÉMICO -->
+            <section id="academico" class="module hidden">
+                <div class="card-form">
+                    <h2>Justificación del Método Matemático</h2>
+                    <p><strong>1. ¿Qué problema se resuelve?</strong> Buscamos abastecer la zapatería minimizando el costo de compra, sujetos a la restricción de satisfacer la demanda exacta requerida por la tienda y no exceder las disponibilidades de los proveedores.</p>
+                    <p><strong>2. ¿Por qué Gran M?</strong> La necesidad de abastecer una cantidad <i>exacta</i> de producto genera una restricción de igualdad ($=$). Las reglas del Simplex dictan que las restricciones de igualdad requieren agregar una <b>Variable Artificial ($A_i$)</b> para obtener una solución básica factible inicial. El método de la Gran M penaliza esta variable en la función objetivo sumándole un costo altísimo ($M = 10000$) para obligar al algoritmo a volverla cero.</p>
+                    <p><strong>3. Limitación del Costo Fijo (Envío):</strong> El costo de envío en encomiendas es fijo (Q45) sin importar el volumen. El método Simplex resuelve variables continuas lineales, no variables binarias (Sí/No). Incluir el costo fijo directamente dentro de la función matemática requeriría Programación Entera Mixta. Para mantenernos fieles a lo visto en clase (Gran M puro), el modelo minimiza los costos variables (productos), y el costo logístico de envío se calcula de forma complementaria sobre el resultado.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="gran-m.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
